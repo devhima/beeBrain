@@ -29,6 +29,7 @@ SOFTWARE.
 
 from numpy import array, random
 from beeNeuralNetwork import *
+
 if __name__ == "__main__":
 
     #Seed the random number generator
@@ -43,15 +44,15 @@ if __name__ == "__main__":
     netLayers = [layer1, layer2]
 
     # Combine the layers to create a neural network
-    neural_network = NeuralNetwork(netLayers)
+    neural_network = NeuralNetwork(netLayers, "signum")
 
     print "Stage 1) Random starting synaptic weights: "
     neural_network.print_weights()
 
     # The training set. We have 3 examples, each consisting of 2 input values
     # and 1 output value.
-    training_set_inputs = array([[0, 0], [0, 1], [1, 1]])
-    training_set_outputs = array([[0, 1, 0]]).T
+    training_set_inputs = array([[30, 50], [40, 18], [8, 10]])
+    training_set_outputs = array([[-1, 1, -1]]).T
 
     # Train the neural network using the training set.
     # Do it 60,000 times and make small adjustments each time.
@@ -61,6 +62,6 @@ if __name__ == "__main__":
     neural_network.print_weights()
 
     # Test the neural network with a new situation.
-    print "Stage 3) Considering a new situation [1, 0] -> ?: "
-    output = neural_network.think(array([1, 0]))
+    print "Stage 3) Considering a new situation [80, 50] -> ?: "
+    output = neural_network.think(array([80, 50]))
     print output[len(output)-1]

@@ -28,6 +28,7 @@ SOFTWARE.
 '''
 
 from numpy import exp, array, random, dot
+from activationFunctions import ActivationFunctions
 
 class NeuronLayer():
     def __init__(self, number_of_neurons, number_of_inputs_per_neuron):
@@ -37,20 +38,31 @@ class NeuronLayer():
         
 
 class NeuralNetwork():
-    def __init__(self, __layers):
+    def __init__(self, __layers, __activation_function):
         self.layers = __layers
+        self.__activation_function = __activation_function
 
     # The Sigmoid function, which describes an S shaped curve.
     # We pass the weighted sum of the inputs through this function to
     # normalise them between 0 and 1.
-    def __sigmoid(self, x):
-        return 1 / (1 + exp(-x))
+    def activation_function(self, x):
+        if self.__activation_function == "sigmoid":
+            return ActivationFunctions.sigmoid(x)
+        elif self.__activation_function == "signum":
+            return ActivationFunctions.signum(x)
+        else:
+            return ActivationFunctions.sigmoid(x)
 
     # The derivative of the Sigmoid function.
     # This is the gradient of the Sigmoid curve.
     # It indicates how confident we are about the existing weight.
-    def __sigmoid_derivative(self, x):
-        return x * (1 - x)
+    def activation_function_derivative(self, x):
+        if self.__activation_function == "sigmoid":
+            return ActivationFunctions.sigmoid_derivative(x)
+        elif self.__activation_function == "signum":
+            return ActivationFunctions.signum_derivative(x)
+        else:
+            return ActivationFunctions.sigmoid_derivative(x)
 
     # We train the neural network through a process of trial and error.
     # Adjusting the synaptic weights each time.
@@ -63,7 +75,7 @@ class NeuralNetwork():
             # Calculate the error for last layer (The difference between the desired output
             # and the predicted output).
             last_layer_error = training_set_outputs - outputs[outputs_size - 1]
-            last_layer_delta = last_layer_error * self.__sigmoid_derivative(outputs[outputs_size - 1])
+            last_layer_delta = last_layer_error * self.activation_function_derivative(outputs[outputs_size - 1])
             layers_delta = []
             layers_delta.append(last_layer_delta)
 
@@ -73,7 +85,7 @@ class NeuralNetwork():
             for layer_out in reversed(outputs):
                 if current_layer != outputs_size - 1:
                     last_layer_error = last_layer_delta.dot(self.layers[current_layer+1].synaptic_weights.T)
-                    last_layer_delta = last_layer_error * self.__sigmoid_derivative(layer_out)
+                    last_layer_delta = last_layer_error * self.activation_function_derivative(layer_out)
                     layers_delta.append(last_layer_delta)
                 current_layer-=1
 
@@ -97,7 +109,7 @@ class NeuralNetwork():
         outputs = []
         last_inputs = inputs
         for layer in self.layers:
-            last_inputs = self.__sigmoid(dot(last_inputs, layer.synaptic_weights))
+            last_inputs = self.activation_function(dot(last_inputs, layer.synaptic_weights))
             outputs.append(last_inputs)
         return outputs
 
