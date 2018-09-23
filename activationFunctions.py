@@ -99,7 +99,8 @@ class ActivationFunctions(enum.Enum):
         y = x / (1 + abs(x))
         return y / abs(y)
 
-    # The derivative of the signum function, by calculating abs(signum(x))
+    # The derivative of the signum function, by calculating y=1 / ((1 + |x|) ^ 2)
+    # then calculate y/|y|
     # It returns 1 or 0
     @staticmethod
     def signum_derivative(x):
