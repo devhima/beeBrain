@@ -68,21 +68,18 @@ class NeuralNetwork():
                 return ActivationFunctions.signum_derivative(x)
             else:
                 return ActivationFunctions.signum(x)
-        else:
-            # default > SIGMOID
+        elif self.__activation_function == ActivationFunctions.TANH:
+            # TANH
             if derivative == True:
-                return ActivationFunctions.sigmoid_derivative(x)
+                return ActivationFunctions.tanh_derivative(x)
             else:
-                return ActivationFunctions.sigmoid(x)
+                return ActivationFunctions.tanh(x)
 
-    # The Sigmoid function, which describes an S shaped curve.
-    # We pass the weighted sum of the inputs through this function to
-    # normalise them between 0 and 1.
+    # Returns the result of activation function
     def activation_function(self, x):
         return self.build_activation_function(x, False)
 
-    # The derivative of the Sigmoid function.
-    # This is the gradient of the Sigmoid curve.
+    # Returns the result of the derivative of activation function
     # It indicates how confident we are about the existing weight.
     def activation_function_derivative(self, x):
         return self.build_activation_function(x, True)

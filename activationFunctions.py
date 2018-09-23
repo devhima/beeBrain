@@ -42,7 +42,6 @@ class ActivationFunctions(enum.Enum):
         return x
     
     # The derivative of the Identity function, by calculating the first derivative of x.
-    # It indicates how confident we are about the existing weight.
     # It always returns 1
     @staticmethod
     def identity_derivative(x):
@@ -62,7 +61,6 @@ class ActivationFunctions(enum.Enum):
     
     # The derivative of the Binary step (Heaviside step) function, you can get it
     # by calculating the derivative of dH/dx that equals the dirac delta of x.
-    # It indicates how confident we are about the existing weight.
     # It returns 0 if x>0 or x<0, and it returns ? if x = 0.
     @staticmethod
     def binary_derivative(x):
@@ -83,7 +81,6 @@ class ActivationFunctions(enum.Enum):
 
     # The derivative of the Sigmoid function.
     # This is the gradient of the Sigmoid curve.
-    # It indicates how confident we are about the existing weight.
     @staticmethod
     def sigmoid_derivative(x):
         return x * (1 - x)
@@ -103,7 +100,6 @@ class ActivationFunctions(enum.Enum):
         return y / abs(y)
 
     # The derivative of the signum function, by calculating abs(signum(x))
-    # It indicates how confident we are about the existing weight.
     # It returns 1 or 0
     @staticmethod
     def signum_derivative(x):
@@ -112,6 +108,23 @@ class ActivationFunctions(enum.Enum):
         
     #Enum name&value
     SIGNUM = 3
+
+    #____________________________________________________________
+    
+    # >>>> TanH (Hyperbolic tangent) function <<<<
+    # The hyperbolic tangent is the solution to the differential equation 
+    # f'=1-f^2 with f(0)=0 and the nonlinear boundary value problem
+    @staticmethod
+    def tanh(x):
+        return (exp(x) - exp(-x)) / (exp(x) + exp(-x))
+
+    # The derivative of the TanH function, by calculating 1-(f(x))^2
+    @staticmethod
+    def tanh_derivative(x):
+        return 1 - (x ** 2)
+        
+    #Enum name&value
+    TANH = 4
 
     #____________________________________________________________
 

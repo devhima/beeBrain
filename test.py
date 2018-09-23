@@ -45,7 +45,7 @@ if __name__ == "__main__":
     netLayers = [layer1, layer2]
 
     # Combine the layers to create a neural network
-    neural_network = NeuralNetwork(netLayers, ActivationFunctions.SIGNUM)
+    neural_network = NeuralNetwork(netLayers, ActivationFunctions.TANH)
 
     print "Stage 1) Random starting synaptic weights: "
     neural_network.print_weights()
@@ -63,6 +63,6 @@ if __name__ == "__main__":
     neural_network.print_weights()
 
     # Test the neural network with a new situation.
-    print "Stage 3) Considering a new situation [8, 50] -> ?: "
-    output = neural_network.think(array([8, 50]))
+    print "Stage 3) Considering a new situation [80, 50] -> ?: "
+    output = neural_network.think(array([80, 50]))
     print output[len(output)-1]
