@@ -61,7 +61,7 @@ class ActivationFunctions(enum.Enum):
         return numpy.where(x>=0, 1, 0)
     
     # The derivative of the Binary step (Heaviside step) function, you can get it
-    # by calculating the derivative of dH/dx that equals the dirac delta of x, ?(x).
+    # by calculating the derivative of dH/dx that equals the dirac delta of x.
     # It indicates how confident we are about the existing weight.
     # It returns 0 if x>0 or x<0, and it returns ? if x = 0.
     @staticmethod
@@ -73,10 +73,10 @@ class ActivationFunctions(enum.Enum):
 
     #____________________________________________________________
 
-	# >>>> Sigmoid function <<<<
-	# The Sigmoid function, which describes an S shaped curve.
-	# We pass the weighted sum of the inputs through this function to
-	# normalise them between 0 and 1.
+    # >>>> Sigmoid function <<<<
+    # The Sigmoid function, which describes an S shaped curve.
+    # We pass the weighted sum of the inputs through this function to
+    # normalise them between 0 and 1.
     @staticmethod
     def sigmoid(x):
         return 1 / (1 + exp(-x))
