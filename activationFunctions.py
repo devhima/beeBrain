@@ -28,8 +28,51 @@ SOFTWARE.
 '''
 
 from numpy import exp
+import numpy
+import enum
 
-class ActivationFunctions():
+class ActivationFunctions(enum.Enum):
+    
+    # >>>> Identity function <<<<
+    # The Identity function, is a function that always returns
+    # the same value that was used as its argument.
+    # In equations, the function is given by f(x) = x.
+    @staticmethod
+    def identity(x):
+        return x
+    
+    # The derivative of the Identity function, by calculating the first derivative of x.
+    # It indicates how confident we are about the existing weight.
+    # It always returns 1
+    @staticmethod
+    def identity_derivative(x):
+        return 1
+    
+    #Enum name&value
+    IDENTITY = 0
+
+    #____________________________________________________________
+    
+    # >>>> Binary step (Heaviside step) function <<<<
+    # The Binary function, is a function that returns
+    # value is 0 for negative argument and 1 for positive argument.
+    @staticmethod
+    def binary(x):
+        return numpy.where(x>=0, 1, 0)
+    
+    # The derivative of the Binary step (Heaviside step) function, you can get it
+    # by calculating the derivative of dH/dx that equals the dirac delta of x, ?(x).
+    # It indicates how confident we are about the existing weight.
+    # It returns 0 if x>0 or x<0, and it returns ? if x = 0.
+    @staticmethod
+    def binary_derivative(x):
+        return 0
+    
+    #Enum name&value
+    BINARY = 1
+
+    #____________________________________________________________
+
 	# >>>> Sigmoid function <<<<
 	# The Sigmoid function, which describes an S shaped curve.
 	# We pass the weighted sum of the inputs through this function to
@@ -44,23 +87,31 @@ class ActivationFunctions():
     @staticmethod
     def sigmoid_derivative(x):
         return x * (1 - x)
+    
+    #Enum name&value
+    SIGMOID = 2
 
     #____________________________________________________________
 
-    # >>>> Signum function <<<<
+    # >>>> Signum (Softsign) function <<<<
     # The signum function, which extracts the sign of a real number x
     # We pass the weighted sum of the inputs through this function to
     # normalise them between -1 and +1.
     @staticmethod
     def signum(x):
-        return x / abs(x)
+        y = x / (1 + abs(x))
+        return y / abs(y)
 
     # The derivative of the signum function, by calculating abs(signum(x))
     # It indicates how confident we are about the existing weight.
     # It returns 1 or 0
     @staticmethod
     def signum_derivative(x):
-        return abs(ActivationFunctions.signum(x))
+        y = 1 / ((1 + abs(x)) ** 2)
+        return y / abs(y)
+        
+    #Enum name&value
+    SIGNUM = 3
 
     #____________________________________________________________
 

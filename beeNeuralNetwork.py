@@ -42,27 +42,50 @@ class NeuralNetwork():
         self.layers = __layers
         self.__activation_function = __activation_function
 
+    # Activation function builder
+    def build_activation_function(self, x, derivative):
+        if self.__activation_function == ActivationFunctions.IDENTITY:
+            # IDENTITY
+            if derivative == True:
+                return ActivationFunctions.identity_derivative(x)
+            else:
+                return ActivationFunctions.identity(x)
+        elif self.__activation_function == ActivationFunctions.BINARY:
+            # BINARY
+            if derivative == True:
+                return ActivationFunctions.binary_derivative(x)
+            else:
+                return ActivationFunctions.binary(x)
+        elif self.__activation_function == ActivationFunctions.SIGMOID:
+            # SIGMOID
+            if derivative == True:
+                return ActivationFunctions.sigmoid_derivative(x)
+            else:
+                return ActivationFunctions.sigmoid(x)
+        elif self.__activation_function == ActivationFunctions.SIGNUM:
+            # SIGNUM
+            if derivative == True:
+                return ActivationFunctions.signum_derivative(x)
+            else:
+                return ActivationFunctions.signum(x)
+        else:
+            # default > SIGMOID
+            if derivative == True:
+                return ActivationFunctions.sigmoid_derivative(x)
+            else:
+                return ActivationFunctions.sigmoid(x)
+
     # The Sigmoid function, which describes an S shaped curve.
     # We pass the weighted sum of the inputs through this function to
     # normalise them between 0 and 1.
     def activation_function(self, x):
-        if self.__activation_function == "sigmoid":
-            return ActivationFunctions.sigmoid(x)
-        elif self.__activation_function == "signum":
-            return ActivationFunctions.signum(x)
-        else:
-            return ActivationFunctions.sigmoid(x)
+        return self.build_activation_function(x, False)
 
     # The derivative of the Sigmoid function.
     # This is the gradient of the Sigmoid curve.
     # It indicates how confident we are about the existing weight.
     def activation_function_derivative(self, x):
-        if self.__activation_function == "sigmoid":
-            return ActivationFunctions.sigmoid_derivative(x)
-        elif self.__activation_function == "signum":
-            return ActivationFunctions.signum_derivative(x)
-        else:
-            return ActivationFunctions.sigmoid_derivative(x)
+        return self.build_activation_function(x, True)
 
     # We train the neural network through a process of trial and error.
     # Adjusting the synaptic weights each time.
