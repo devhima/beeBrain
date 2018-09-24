@@ -128,4 +128,22 @@ class ActivationFunctions(enum.Enum):
     TANH = 4
 
     #____________________________________________________________
+    
+    # >>>> ArcTan function <<<<
+    # We use the ArcTan to inverse trigonometric tangent function
+    # and it used to obtain an angle from any of the angle's trigonometric ratios.
+    # and we calculate it by tan-1(x)
+    @staticmethod
+    def arctan(x):
+        return numpy.arctan(x)
+
+    # The derivative of the ArcTan function, by calculating 1/((x^2)+1)
+    @staticmethod
+    def arctan_derivative(x):
+        return 1 / ((x ** 2) + 1)
+        
+    #Enum name&value
+    ARCTAN = 5
+
+    #____________________________________________________________
 

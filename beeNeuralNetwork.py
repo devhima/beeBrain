@@ -74,6 +74,12 @@ class NeuralNetwork():
                 return ActivationFunctions.tanh_derivative(x)
             else:
                 return ActivationFunctions.tanh(x)
+        elif self.__activation_function == ActivationFunctions.ARCTAN:
+            # ARCTAN
+            if derivative == True:
+                return ActivationFunctions.arctan_derivative(x)
+            else:
+                return ActivationFunctions.arctan(x)
 
     # Returns the result of activation function
     def activation_function(self, x):
