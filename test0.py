@@ -67,8 +67,9 @@ if __name__ == "__main__":
     training_set_outputs = array([[calc_output(training_set_inputs[0]), calc_output(training_set_inputs[1]), calc_output(training_set_inputs[2]), calc_output(training_set_inputs[3])]]).T
 
     # Train the neural network using the training set.
-    # Do it 60,000 times and make small adjustments each time.
-    neural_network.train(training_set_inputs, training_set_outputs, 4)
+    # Do it 10,000 times and make small adjustments each time.
+    # with learning rate = 0.001
+    neural_network.train(training_set_inputs, training_set_outputs, 10000, 0.001)
 
     print "Stage 2) New synaptic weights after training: "
     neural_network.print_weights()

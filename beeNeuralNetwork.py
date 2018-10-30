@@ -122,7 +122,7 @@ class NeuralNetwork():
 
     # We train the neural network through a process of trial and error.
     # Adjusting the synaptic weights each time.
-    def train(self, training_set_inputs, training_set_outputs, number_of_training_iterations):
+    def train(self, training_set_inputs, training_set_outputs, number_of_training_iterations, learning_rate):
         for iteration in xrange(number_of_training_iterations):
             # Pass the training set through our neural network
             outputs = self.think(training_set_inputs)
@@ -152,6 +152,7 @@ class NeuralNetwork():
             layer_num = 0
             for layer_delta in layers_delta:
                 last_layer_adjustment = last_training_set.T.dot(layer_delta)
+                last_layer_adjustment *= learning_rate
                 last_training_set = outputs[layer_num]
                 layer_num+=1
                 layers_adjustment.append(last_layer_adjustment)
