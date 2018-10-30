@@ -80,6 +80,36 @@ class NeuralNetwork():
                 return ActivationFunctions.arctan_derivative(x)
             else:
                 return ActivationFunctions.arctan(x)
+        elif self.__activation_function == ActivationFunctions.ISRU:
+            # ISRU
+            if derivative == True:
+                return ActivationFunctions.isru_derivative(x)
+            else:
+                return ActivationFunctions.isru(x)
+        elif self.__activation_function == ActivationFunctions.RELU:
+            # RELU
+            if derivative == True:
+                return ActivationFunctions.relu_derivative(x)
+            else:
+                return ActivationFunctions.relu(x)
+        elif self.__activation_function == ActivationFunctions.LRELU:
+            # Leaky RELU
+            if derivative == True:
+                return ActivationFunctions.lrelu_derivative(x)
+            else:
+                return ActivationFunctions.lrelu(x)
+        elif self.__activation_function == ActivationFunctions.PRELU:
+            # PRELU
+            if derivative == True:
+                return ActivationFunctions.prelu_derivative(x)
+            else:
+                return ActivationFunctions.prelu(x)
+        elif self.__activation_function == ActivationFunctions.RRELU:
+            # RRELU
+            if derivative == True:
+                return ActivationFunctions.rrelu_derivative(x)
+            else:
+                return ActivationFunctions.rrelu(x)
 
     # Returns the result of activation function
     def activation_function(self, x):

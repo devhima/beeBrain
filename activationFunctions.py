@@ -28,6 +28,7 @@ SOFTWARE.
 '''
 
 from numpy import exp
+from constants import Constants
 import numpy
 import enum
 
@@ -147,3 +148,88 @@ class ActivationFunctions(enum.Enum):
 
     #____________________________________________________________
 
+    # >>>> ISRU function <<<<
+    # We use the ISRU(Inverse square root unit) to speed up learning in deep neural networks.
+    @staticmethod
+    def isru(x):
+        return x / numpy.sqrt(1 + (Constants.ALPHA * (x ** 2)))
+
+    # The derivative of the ISRU function
+    @staticmethod
+    def isru_derivative(x):
+        return (1 / numpy.sqrt(1 + (Constants.ALPHA * (x ** 2))) ** 3)
+        
+    #Enum name&value
+    ISRU = 6
+
+    #____________________________________________________________
+
+    # >>>> ReLU(Rectified linear unit) function <<<<
+    # Used in almost all the convolutional neural networks or deep learning.
+    @staticmethod
+    def relu(x):
+        return numpy.where(x>=0, x, 0)
+    
+    # The derivative of the ReLU(Rectified linear unit) function.
+    @staticmethod
+    def relu_derivative(x):
+        return numpy.where(x>=0, 1, 0)
+    
+    #Enum name&value
+    RELU = 7
+
+    #____________________________________________________________
+    
+    # >>>>Leaky ReLU(Leaky rectified linear unit) function <<<<
+    # Used in almost all the convolutional neural networks or deep learning.
+    # The leak helps to increase the range of the ReLU function.
+    # Usually, the value of a is 0.01 or so.
+    @staticmethod
+    def lrelu(x):
+        return numpy.where(x>=0, x, (0.01*x))
+    
+    # The derivative of the Leaky ReLU(Leaky rectified linear unit) function.
+    @staticmethod
+    def lrelu_derivative(x):
+        return numpy.where(x>=0, 1, 0.01)
+    
+    #Enum name&value
+    LRELU = 8
+
+    #____________________________________________________________
+    
+    # >>>>PReLU(Parametric rectified linear unit) function <<<<
+    # Used in almost all the convolutional neural networks or deep learning.
+    # The Parametric helps to increase the range of the ReLU function.
+    # Usually, the value of a is ALPHA.
+    @staticmethod
+    def prelu(x):
+        return numpy.where(x>=0, x, (Constants.ALPHA * x))
+    
+    # The derivative of the PReLU(Parametric rectified linear unit) function.
+    @staticmethod
+    def prelu_derivative(x):
+        return numpy.where(x>=0, 1, Constants.ALPHA)
+    
+    #Enum name&value
+    PRELU = 9
+
+    #____________________________________________________________
+
+    # >>>>RReLU(Randomized leaky rectified linear unit) function <<<<
+    # Used in almost all the convolutional neural networks or deep learning.
+    # The Randomized leak helps to increase the range of the ReLU function.
+    # Usually, the value of a is ALPHA.
+    @staticmethod
+    def rrelu(x):
+        return numpy.where(x>=0, x, (Constants.ALPHA * x))
+    
+    # The derivative of the RReLU(Parametric rectified linear unit) function.
+    @staticmethod
+    def rrelu_derivative(x):
+        return numpy.where(x>=0, 1, Constants.ALPHA)
+    
+    #Enum name&value
+    RRELU = 10
+
+    #____________________________________________________________
