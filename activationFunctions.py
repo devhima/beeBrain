@@ -39,6 +39,9 @@ class AFParameters():
 	#RRELU
 	rrelu_alpha = Constants.ALPHA
 	
+	#ELU
+	elu_alpha = Constants.ALPHA
+	
 
 class ActivationFunctions(enum.Enum):
     
@@ -249,5 +252,42 @@ class ActivationFunctions(enum.Enum):
     
     #Enum name&value
     RRELU = 10
+
+    #____________________________________________________________
+
+    # >>>>ELU(Exponential Linear Unit) function <<<<
+    # Used in neural networks to speed up learning.
+    @staticmethod
+    def elu(x):
+        return numpy.where(x>=0, x, (AFParameters.elu_alpha * (exp(x) - 1)))
+    
+    # The derivative of the ELU(Exponential Linear Unit) function.
+    @staticmethod
+    def elu_derivative(x):
+        return numpy.where(x>=0, 1, (x + AFParameters.elu_alpha))
+    
+    # Parameters setter
+    @staticmethod
+    def set_elu_parameters(_alpha):
+        AFParameters.elu_alpha = _alpha
+    
+    #Enum name&value
+    ELU = 11
+
+    #____________________________________________________________
+
+    # >>>>SELU(Scaled Exponential Linear Unit) function <<<<
+    # SELU is some kind of ELU but with a little twist.
+    @staticmethod
+    def selu(x):
+        return numpy.where(x>=0, (Constants.SELU_LAMBDA * x), (Constants.SELU_LAMBDA * (Constants.SELU_ALPHA * (exp(x) - 1))))
+    
+    # The derivative of the SELU(Scaled Exponential Linear Unit) function.
+    @staticmethod
+    def selu_derivative(x):
+        return numpy.where(x>=0, Constants.SELU_LAMBDA, (Constants.SELU_LAMBDA * (Constants.SELU_ALPHA * exp(x))))
+    
+    #Enum name&value
+    SELU = 12
 
     #____________________________________________________________

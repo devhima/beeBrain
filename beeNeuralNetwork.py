@@ -110,6 +110,18 @@ class NeuralNetwork():
                 return ActivationFunctions.rrelu_derivative(x)
             else:
                 return ActivationFunctions.rrelu(x)
+        elif self.__activation_function == ActivationFunctions.ELU:
+            # ELU
+            if derivative == True:
+                return ActivationFunctions.elu_derivative(x)
+            else:
+                return ActivationFunctions.elu(x)
+        elif self.__activation_function == ActivationFunctions.SELU:
+            # SELU
+            if derivative == True:
+                return ActivationFunctions.selu_derivative(x)
+            else:
+                return ActivationFunctions.selu(x)
 
     # Returns the result of activation function
     def activation_function(self, x):
