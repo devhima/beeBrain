@@ -32,6 +32,14 @@ from constants import Constants
 import numpy
 import enum
 
+class AFParameters():
+	#PRELU
+	prelu_alpha = Constants.ALPHA
+	
+	#RRELU
+	rrelu_alpha = Constants.ALPHA
+	
+
 class ActivationFunctions(enum.Enum):
     
     # >>>> Identity function <<<<
@@ -204,12 +212,17 @@ class ActivationFunctions(enum.Enum):
     # Usually, the value of a is ALPHA.
     @staticmethod
     def prelu(x):
-        return numpy.where(x>=0, x, (Constants.ALPHA * x))
+        return numpy.where(x>=0, x, (AFParameters.prelu_alpha * x))
     
     # The derivative of the PReLU(Parametric rectified linear unit) function.
     @staticmethod
     def prelu_derivative(x):
-        return numpy.where(x>=0, 1, Constants.ALPHA)
+        return numpy.where(x>=0, 1, AFParameters.prelu_alpha)
+    
+    # Parameters setter
+    @staticmethod
+    def set_prelu_parameters(_alpha):
+        AFParameters.prelu_alpha = _alpha
     
     #Enum name&value
     PRELU = 9
@@ -222,12 +235,17 @@ class ActivationFunctions(enum.Enum):
     # Usually, the value of a is ALPHA.
     @staticmethod
     def rrelu(x):
-        return numpy.where(x>=0, x, (Constants.ALPHA * x))
+        return numpy.where(x>=0, x, (AFParameters.rrelu_alpha * x))
     
     # The derivative of the RReLU(Parametric rectified linear unit) function.
     @staticmethod
     def rrelu_derivative(x):
-        return numpy.where(x>=0, 1, Constants.ALPHA)
+        return numpy.where(x>=0, 1, AFParameters.rrelu_alpha)
+    
+    # Parameters setter
+    @staticmethod
+    def set_rrelu_parameters(_alpha):
+        AFParameters.rrelu_alpha = _alpha
     
     #Enum name&value
     RRELU = 10
