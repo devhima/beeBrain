@@ -122,6 +122,30 @@ class NeuralNetwork():
                 return ActivationFunctions.selu_derivative(x)
             else:
                 return ActivationFunctions.selu(x)
+        elif self.__activation_function == ActivationFunctions.SRELU:
+            # SRELU
+            if derivative == True:
+                return ActivationFunctions.srelu_derivative(x)
+            else:
+                return ActivationFunctions.srelu(x)
+        elif self.__activation_function == ActivationFunctions.ISRLU:
+            # ISRLU
+            if derivative == True:
+                return ActivationFunctions.isrlu_derivative(x)
+            else:
+                return ActivationFunctions.isrlu(x)
+        elif self.__activation_function == ActivationFunctions.APL:
+            # APL
+            if derivative == True:
+                return ActivationFunctions.apl_derivative(x)
+            else:
+                return ActivationFunctions.apl(x)
+        elif self.__activation_function == ActivationFunctions.SP:
+            # SoftPlus
+            if derivative == True:
+                return ActivationFunctions.sp_derivative(x)
+            else:
+                return ActivationFunctions.sp(x)
 
     # Returns the result of activation function
     def activation_function(self, x):

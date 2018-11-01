@@ -30,7 +30,10 @@ SOFTWARE.
 from numpy import exp
 from constants import Constants
 import numpy
+from numpy.lib.scimath import logn
+from math import e
 import enum
+from random import uniform
 
 class AFParameters():
 	#PRELU
@@ -41,6 +44,17 @@ class AFParameters():
 	
 	#ELU
 	elu_alpha = Constants.ALPHA
+	
+	#SRELU
+	srelu_tl = -0.4
+	srelu_al = 0.2
+	srelu_tr = 0.4
+	srelu_ar = 0.2
+	
+	#APL
+	apl_s = 1
+	apl_a = [0.2]
+	apl_b = [0.4]
 	
 
 class ActivationFunctions(enum.Enum):
@@ -243,6 +257,7 @@ class ActivationFunctions(enum.Enum):
     # The derivative of the RReLU(Parametric rectified linear unit) function.
     @staticmethod
     def rrelu_derivative(x):
+        ActivationFunctions.set_rrelu_parameters(uniform(-Constants.ALPHA, Constants.ALPHA))
         return numpy.where(x>=0, 1, AFParameters.rrelu_alpha)
     
     # Parameters setter
@@ -289,5 +304,97 @@ class ActivationFunctions(enum.Enum):
     
     #Enum name&value
     SELU = 12
+
+    #____________________________________________________________
+
+    # >>>>SReLU(S-shaped rectified linear activation unit) function <<<<
+    # We use SReLU to learn both convex and non-convex functions,
+    # imitating the multiple function forms given by the two fundamental laws,
+    # namely the Webner-Fechner law and the Stevens law, in psychophysics and neural sciences.
+    @staticmethod
+    def srelu(x):
+        conditions = [ x<=AFParameters.srelu_tl, (x>AFParameters.srelu_tl)&(x<AFParameters.srelu_tr), x>=AFParameters.srelu_tr ]
+        choices = [ AFParameters.srelu_tl + (AFParameters.srelu_al * (x-AFParameters.srelu_tl)), x, AFParameters.srelu_tr + (AFParameters.srelu_ar * (x-AFParameters.srelu_tr)) ]
+        result = numpy.select(conditions, choices)
+        return result
+    
+    # The derivative of the SReLU(S-shaped rectified linear activation unit) function.
+    @staticmethod
+    def srelu_derivative(x):
+        conditions = [ x<=AFParameters.srelu_tl, (x>AFParameters.srelu_tl)&(x<AFParameters.srelu_tr), x>=AFParameters.srelu_tr ]
+        choices = [ AFParameters.srelu_al, 1, AFParameters.srelu_ar ]
+        result = numpy.select(conditions, choices)
+        return result
+    
+    # Parameters setter
+    @staticmethod
+    def set_srelu_parameters(_tl, _al, _tr, _ar):
+        AFParameters.srelu_tl = _tl
+        AFParameters.srelu_al = _al
+        AFParameters.srelu_tr = _tr
+        AFParameters.srelu_ar = _ar
+    
+    #Enum name&value
+    SRELU = 13
+
+    #____________________________________________________________
+
+    # >>>> ISRLU function <<<<
+    # We use the ISRLU(Inverse square root linear unit) to speed up learning in deep neural networks.
+    @staticmethod
+    def isrlu(x):
+        return numpy.where(x>=0, x, x / numpy.sqrt(1 + (Constants.ALPHA * (x ** 2))))
+
+    # The derivative of the ISRLU function
+    @staticmethod
+    def isrlu_derivative(x):
+        return numpy.where(x>=0, 1, (1 / numpy.sqrt(1 + (Constants.ALPHA * (x ** 2))) ** 3))
+        
+    #Enum name&value
+    ISRLU = 14
+
+    #____________________________________________________________
+
+    # >>>> APL function <<<<
+    # APL(Adaptive piecewise linear) in agriculture
+    # piecewise regression analysis of measured data
+    # is used to detect the range over which growth factors
+    # affect the yield and the range over
+    # which the crop is not sensitive to changes in these factors.
+    @staticmethod
+    def apl(x):
+        result = numpy.maximum(0, x)
+        for i in xrange(AFParameters.apl_s):
+            result += AFParameters.apl_a[i] * numpy.maximum(0, (-x + AFParameters.apl_b[i]))
+        return result
+
+    # The derivative of the APL function
+    @staticmethod
+    def apl_derivative(x):
+        result = ActivationFunctions.binary(x)
+        result = result.astype('float64')
+        for i in xrange(AFParameters.apl_s):
+            result -= AFParameters.apl_a[i] * ActivationFunctions.binary(-x + AFParameters.apl_b[i])
+        return result
+        
+    #Enum name&value
+    APL = 15
+
+    #____________________________________________________________
+
+    # >>>> SoftPlus function <<<<
+    # We use the SP to get Biological plausibility, Sparse activation,
+    # Better gradient propagation, Efficient computation, Scale-invariant.
+    @staticmethod
+    def sp(x):
+        return logn(e, 1 + exp(x))
+
+    # The derivative of the SP function
+    @staticmethod
+    def sp_derivative(x):
+        return 1 / (1 + exp(-x))
+        
+    #Enum name&value
+    SP = 16
 
     #____________________________________________________________

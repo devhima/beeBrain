@@ -55,7 +55,7 @@ if __name__ == "__main__":
     netLayers = [layer1, layer2, layer3]
 
     # Combine the layers to create a neural network
-    neural_network = NeuralNetwork(netLayers, ActivationFunctions.SELU)
+    neural_network = NeuralNetwork(netLayers, ActivationFunctions.APL)
 
     print "Stage 1) Random starting synaptic weights: "
     neural_network.print_weights()
@@ -67,8 +67,8 @@ if __name__ == "__main__":
 
     # Train the neural network using the training set.
     # Do it 10,000 times and make small adjustments each time.
-    # with learning rate = 0.001
-    neural_network.train(training_set_inputs, training_set_outputs, 10000, 0.0001)
+    # with learning rate = 0.00000001
+    neural_network.train(training_set_inputs, training_set_outputs, 10000, 0.00000001)
 
     print "Stage 2) New synaptic weights after training: "
     neural_network.print_weights()
