@@ -28,8 +28,8 @@ SOFTWARE.
 '''
 
 from numpy import array, random
-from beeBrain.neuralNetwork import *
-from beeBrain.activationFunctions import ActivationFunctions
+from beeBrainLib.neuralNetwork import *
+from beeBrainLib.activationFunctions import ActivationFunctions
 
 def calc_output(input):
     sum = 0
