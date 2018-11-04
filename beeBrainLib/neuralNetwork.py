@@ -152,6 +152,12 @@ class NeuralNetwork():
                 return ActivationFunctions.bi_derivative(x)
             else:
                 return ActivationFunctions.bi(x)
+        elif self.__activation_function == ActivationFunctions.SILU:
+            # SiLU
+            if derivative == True:
+                return ActivationFunctions.silu_derivative(x)
+            else:
+                return ActivationFunctions.silu(x)
 
     # Returns the result of activation function
     def activation_function(self, x):

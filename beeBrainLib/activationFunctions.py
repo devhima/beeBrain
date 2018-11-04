@@ -413,3 +413,18 @@ class ActivationFunctions(enum.Enum):
     BI = 17
 
     #____________________________________________________________
+
+    # >>>> SiLU function <<<<
+    @staticmethod
+    def silu(x):
+        return (x * ActivationFunctions.sigmoid(x))
+
+    # The derivative of the SiLU function
+    @staticmethod
+    def silu_derivative(x):
+        return (x + (ActivationFunctions.sigmoid(x) * (1-x)))
+        
+    #Enum name&value
+    SILU = 18
+
+    #____________________________________________________________
