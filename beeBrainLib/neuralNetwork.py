@@ -27,6 +27,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 '''
 
+import numpy
 from numpy import exp, array, random, dot
 from activationFunctions import ActivationFunctions
 
@@ -158,6 +159,12 @@ class NeuralNetwork():
                 return ActivationFunctions.silu_derivative(x)
             else:
                 return ActivationFunctions.silu(x)
+        elif self.__activation_function == ActivationFunctions.SOFTEXP:
+            # SoftExp
+            if derivative == True:
+                return ActivationFunctions.softexp_derivative(x)
+            else:
+                return ActivationFunctions.softexp(x)
 
     # Returns the result of activation function
     def activation_function(self, x):
@@ -207,6 +214,7 @@ class NeuralNetwork():
 
             # Adjust the weights.
             for i in xrange(0, len(self.layers)-1):
+                #numpy.add(self.layers[i].synaptic_weights, layers_adjustment[i], out=self.layers[i].synaptic_weights, casting="unsafe")
                 self.layers[i].synaptic_weights += layers_adjustment[i]
 
     # The neural network thinks.

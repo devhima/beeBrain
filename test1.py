@@ -51,8 +51,8 @@ if __name__ == "__main__":
     netLayers = [layer1, layer2, layer3, layer4]
 
     # Combine the layers to create a neural network
-    neural_network = NeuralNetwork(netLayers, ActivationFunctions.SP)
-    #ActivationFunctions.set_elu_parameters(0.1)
+    neural_network = NeuralNetwork(netLayers, ActivationFunctions.SOFTEXP)
+    ActivationFunctions.set_softexp_parameters(0.001)
 
     print "Stage 1) Random starting synaptic weights: "
     neural_network.print_weights()

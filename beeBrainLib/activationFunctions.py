@@ -56,6 +56,9 @@ class AFParameters():
 	apl_a = [0.2]
 	apl_b = [0.4]
 	
+	#SoftExp
+	softexp_alpha = Constants.ALPHA
+	
 
 class ActivationFunctions(enum.Enum):
     
@@ -426,5 +429,31 @@ class ActivationFunctions(enum.Enum):
         
     #Enum name&value
     SILU = 18
+
+    #____________________________________________________________
+    
+    # >>>>SoftExponential(SoftExp) function <<<<
+    # This function can exactly calculate many natural operations
+    # that typical neural networks can only approximate, 
+    # including addition, multiplication, inner product, distance, polynomials, and sinusoids.
+    @staticmethod
+    def softexp(x):
+        conditions = [ AFParameters.softexp_alpha < 0, AFParameters.softexp_alpha == 0, AFParameters.softexp_alpha > 0 ]
+        choices = [ -(logn(e, 1 - (AFParameters.softexp_alpha * (x + AFParameters.softexp_alpha))))/AFParameters.softexp_alpha, x, ((exp(AFParameters.softexp_alpha * x)-1)/AFParameters.softexp_alpha) + AFParameters.softexp_alpha ]
+        result = numpy.select(conditions, choices)
+        return result
+    
+    # The derivative of the SoftExp function.
+    @staticmethod
+    def softexp_derivative(x):
+        return numpy.where(AFParameters.softexp_alpha>=0, exp(AFParameters.softexp_alpha*x), (1/(1-(AFParameters.softexp_alpha*(AFParameters.softexp_alpha+x)))))
+    
+    # Parameters setter
+    @staticmethod
+    def set_softexp_parameters(_alpha):
+        AFParameters.softexp_alpha = _alpha
+    
+    #Enum name&value
+    SOFTEXP = 19
 
     #____________________________________________________________
