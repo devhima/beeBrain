@@ -165,6 +165,24 @@ class NeuralNetwork():
                 return ActivationFunctions.softexp_derivative(x)
             else:
                 return ActivationFunctions.softexp(x)
+        elif self.__activation_function == ActivationFunctions.SINUSOID:
+            # Sinusoid
+            if derivative == True:
+                return ActivationFunctions.sinusoid_derivative(x)
+            else:
+                return ActivationFunctions.sinusoid(x)
+        elif self.__activation_function == ActivationFunctions.SINC:
+            # Sinc
+            if derivative == True:
+                return ActivationFunctions.sinc_derivative(x)
+            else:
+                return ActivationFunctions.sinc(x)
+        elif self.__activation_function == ActivationFunctions.GAUSSIAN:
+            # Gaussian
+            if derivative == True:
+                return ActivationFunctions.gaussian_derivative(x)
+            else:
+                return ActivationFunctions.gaussian(x)
 
     # Returns the result of activation function
     def activation_function(self, x):

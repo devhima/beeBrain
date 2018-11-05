@@ -457,3 +457,53 @@ class ActivationFunctions(enum.Enum):
     SOFTEXP = 19
 
     #____________________________________________________________
+
+    # >>>> Sinusoid function <<<<
+    # Sinusoid is a mathematical curve that describes a smooth periodic oscillation.
+    # A sine wave is a continuous wave. It is named after the function sine, of which it is the graph. 
+    # It occurs often in pure and applied mathematics,
+    # as well as physics, engineering, signal processing and many other fields.
+    @staticmethod
+    def sinusoid(x):
+        return numpy.sin(x)
+
+    # The derivative of the Sinusoid function.
+    @staticmethod
+    def sinusoid_derivative(x):
+        return numpy.cos(x)
+        
+    #Enum name&value
+    SINUSOID = 20
+
+    #____________________________________________________________
+
+    # >>>> Sinc function <<<<
+    @staticmethod
+    def sinc(x):
+        return numpy.where(x==0, 1, numpy.sin(x)/x)
+
+    # The derivative of the Sinc function
+    @staticmethod
+    def sinc_derivative(x):
+        return numpy.where(x==0, 0, (numpy.cos(x)/x)-(numpy.sin(x)/(x**2)))
+        
+    #Enum name&value
+    SINC = 21
+
+    #____________________________________________________________
+
+    # >>>> Gaussian function <<<<
+    @staticmethod
+    def gaussian(x):
+        return exp(-x ** 2)
+
+    # The derivative of the Gaussian function
+    @staticmethod
+    def gaussian_derivative(x):
+        return -2 * x * exp(-x ** 2)
+        
+    #Enum name&value
+    GAUSSIAN = 22
+
+    #____________________________________________________________
+    
