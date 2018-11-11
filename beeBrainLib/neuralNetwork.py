@@ -29,7 +29,7 @@ SOFTWARE.
 
 import numpy
 from numpy import exp, array, random, dot
-from activationFunctions import ActivationFunctions
+from activationFunctions import ActivationFunctions, LLActivationFunctions
 
 class NeuronLayer():
     def __init__(self, number_of_neurons, number_of_inputs_per_neuron):
@@ -42,6 +42,7 @@ class NeuralNetwork():
     def __init__(self, __layers, __activation_function):
         self.layers = __layers
         self.__activation_function = __activation_function
+        self.__use_llaf = None
 
     # Activation function builder
     def build_activation_function(self, x, derivative):
@@ -204,7 +205,10 @@ class NeuralNetwork():
             # Calculate the error for last layer (The difference between the desired output
             # and the predicted output).
             last_layer_error = training_set_outputs - outputs[outputs_size - 1]
-            last_layer_delta = last_layer_error * self.activation_function_derivative(outputs[outputs_size - 1])
+            if self.__use_llaf != None:
+                last_layer_delta = last_layer_error * self.run_llaf(outputs[outputs_size - 1], True)
+            else:
+                last_layer_delta = last_layer_error * self.activation_function_derivative(outputs[outputs_size - 1])
             layers_delta = []
             layers_delta.append(last_layer_delta)
 
@@ -239,9 +243,18 @@ class NeuralNetwork():
     def think(self, inputs):
         outputs = []
         last_inputs = inputs
+        layers_count = len(self.layers)
+        current_layer = 0
         for layer in self.layers:
-            last_inputs = self.activation_function(dot(last_inputs, layer.synaptic_weights))
+            if self.__use_llaf != None:
+                if current_layer == layers_count-1:
+                    last_inputs = self.run_llaf(dot(last_inputs, layer.synaptic_weights), False)
+                else:
+                    last_inputs = self.activation_function(dot(last_inputs, layer.synaptic_weights))
+            else:
+                last_inputs = self.activation_function(dot(last_inputs, layer.synaptic_weights))
             outputs.append(last_inputs)
+            current_layer+=1
         return outputs
 
     # The neural network prints its weights
@@ -251,3 +264,16 @@ class NeuralNetwork():
             print "Layer {} ({} neurons, with {} inputs)".format(i, layer.n_neurons, layer.n_inputs)
             print layer.synaptic_weights
             i+=1
+
+    # Enable/Disable and set LLAF (Last Layer Activation Function)
+    def use_llaf(self, _llaf):
+        self.__use_llaf = _llaf
+        
+    # Run LLAF (Last Layer Activation Function)
+    def run_llaf(self, x, derivative):
+        if self.__use_llaf == LLActivationFunctions.SOFTMAX:
+            # SOFTMAX
+            if derivative == True:
+                return LLActivationFunctions.softmax_derivative(x)
+            else:
+                return LLActivationFunctions.softmax(x)

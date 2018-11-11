@@ -29,7 +29,7 @@ SOFTWARE.
 
 from numpy import array, random
 from beeBrainLib.neuralNetwork import *
-from beeBrainLib.activationFunctions import ActivationFunctions
+from beeBrainLib.activationFunctions import ActivationFunctions, LLActivationFunctions
 
 if __name__ == "__main__":
 
@@ -45,32 +45,29 @@ if __name__ == "__main__":
     # Create layer 3 (2 neuron with 4 inputs)
     layer3 = NeuronLayer(2, 4)
     
-    # Create layer 3 (1 neuron with 2 inputs)
-    layer4 = NeuronLayer(1, 2)
-    
-    netLayers = [layer1, layer2, layer3, layer4]
+    netLayers = [layer1, layer2, layer3]
 
     # Combine the layers to create a neural network
-    neural_network = NeuralNetwork(netLayers, ActivationFunctions.SOFTEXP)
-    ActivationFunctions.set_softexp_parameters(0.001)
+    neural_network = NeuralNetwork(netLayers, ActivationFunctions.TANH)
+    neural_network.use_llaf(LLActivationFunctions.SOFTMAX)
 
     print "Stage 1) Random starting synaptic weights: "
     neural_network.print_weights()
 
     # The training set. We have 3 examples, each consisting of 2 input values
     # and 1 output value.
-    training_set_inputs = array([[30, 50], [40, 18], [8, 10]])
-    training_set_outputs = array([[1, -1 , 1]]).T
+    training_set_inputs = array([[30, 50], [40, 20], [8, 10]])
+    training_set_outputs = array([[0.1, 0.9 ,0.1 ]]).T
 
     # Train the neural network using the training set.
-    # Do it 6000 times and make small adjustments each time.
-    # with learning rate = 0.000001
-    neural_network.train(training_set_inputs, training_set_outputs, 6000, 0.000001)
+    # Do it 60,000 times and make small adjustments each time.
+    # with learning rate = 0.01
+    neural_network.train(training_set_inputs, training_set_outputs, 6000, 0.01)
 
     print "Stage 2) New synaptic weights after training: "
     neural_network.print_weights()
 
     # Test the neural network with a new situation.
-    print "Stage 3) Considering a new situation [80, 50] -> ?: "
-    output = neural_network.think(array([80, 50]))
+    print "Stage 3) Considering a new situation [70, 30] -> ?: "
+    output = neural_network.think(array([70, 30]))
     print output[len(output)-1]

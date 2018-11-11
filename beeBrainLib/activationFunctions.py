@@ -59,7 +59,29 @@ class AFParameters():
 	#SoftExp
 	softexp_alpha = Constants.ALPHA
 	
+# Last Layer Activation Functions
+class LLActivationFunctions(enum.Enum):
+	
+    # >>>> Softmax function <<<<
+    @staticmethod
+    def softmax(x):
+        exps = exp(x - numpy.max(x))
+        return exps / numpy.sum(exps)
 
+    # The derivative of the Softmax function
+    @staticmethod
+    def softmax_derivative(x):
+        J = - x[..., None] * x[:, None, :] # off-diagonal Jacobian
+        iy, ix = numpy.diag_indices_from(J[0])
+        J[:, iy, ix] = x * (1. - x) # diagonal
+        return J.sum(axis=1)
+      
+    #Enum name&value
+    SOFTMAX = 0
+
+    #____________________________________________________________
+    
+# Common activation functions class
 class ActivationFunctions(enum.Enum):
     
     # >>>> Identity function <<<<

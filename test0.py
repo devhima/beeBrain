@@ -56,7 +56,7 @@ if __name__ == "__main__":
 
     # Combine the layers to create a neural network
     neural_network = NeuralNetwork(netLayers, ActivationFunctions.BI)
-
+    
     print "Stage 1) Random starting synaptic weights: "
     neural_network.print_weights()
 
