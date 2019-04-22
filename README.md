@@ -1,4 +1,4 @@
-## Welcome to beeBrain
+## Welcome to beeBrain 2.0
 
 beeBrain is an artificial intelligence & machine learning library.
 
