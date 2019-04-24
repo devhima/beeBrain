@@ -29,6 +29,7 @@ SOFTWARE.
 
 '''
 [ga.py]
+-  This file contains the implementation of the genetic algorithm.
 '''
 
 import numpy as np
