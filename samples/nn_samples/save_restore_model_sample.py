@@ -28,45 +28,46 @@ SOFTWARE.
 '''
 
 import sys
-sys.path.append('../') #this to include the parent directory
+sys.path.append('../../') #this to include the parent directory
 import numpy as np
 import beeBrain.neuralNetworks as nn
 import matplotlib.pyplot as plt
 
 np.random.seed(1)
-x = np.linspace(-1, 1, 200)[:, None]       # [batch, 1]
-y = x ** 2 + np.random.normal(0., 0.1, (200, 1))     # [batch, 1]
+x = np.linspace(-1, 1, 100)[:, None]       # [batch, 1]
+y = x ** 2 + np.random.normal(0., 0.1, (100, 1))     # [batch, 1]
 
 
 class Net(nn.Module):
     def __init__(self):
         super().__init__()
-        w_init = nn.init.RandomUniform()
-        b_init = nn.init.Constant(0.1)
-
-        self.l1 = nn.layers.Dense(1, 10, nn.act.tanh, w_init, b_init)
-        self.l2 = nn.layers.Dense(10, 10, nn.act.tanh, w_init, b_init)
-        self.out = nn.layers.Dense(10, 1, w_initializer=w_init, b_initializer=b_init)
+        self.l1 = nn.layers.Dense(1, 5, nn.act.tanh)
+        self.out = nn.layers.Dense(5, 1, nn.act.sigmoid)
 
     def forward(self, x):
         x = self.l1(x)
-        x = self.l2(x)
         o = self.out(x)
         return o
 
 
-net = Net()
-opt = nn.optim.Adam(net.params, lr=0.1)
+net1 = Net()
+opt = nn.optim.Adam(net1.params, lr=0.1)
 loss_fn = nn.losses.MSE()
 
-for step in range(100):
-    o = net.forward(x)
+for _ in range(1000):
+    o = net1.forward(x)
     loss = loss_fn(o, y)
-    net.backward(loss)
+    net1.backward(loss)
     opt.step()
-    print("Step: %i | loss: %.5f" % (step, loss.data))
+    print(loss)
+
+# save net1 and restore to net2
+net1.save("./mymodel.bbm")
+net2 = Net()
+net2.restore("./mymodel.bbm")
+o2 = net2.forward(x)
 
 plt.scatter(x, y, s=20)
-plt.plot(x, o.data, c="red", lw=3)
+plt.plot(x, o2.data, c="red", lw=3)
 plt.show()
 

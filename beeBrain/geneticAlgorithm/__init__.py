@@ -31,5 +31,4 @@ SOFTWARE.
 [__init__.py]
 '''
 
-from beeBrain.neuralNetworks.__init__ import *
-from beeBrain.geneticAlgorithm.__init__ import *
+from beeBrain.geneticAlgorithm.ga import GeneticAlgorithm

@@ -28,7 +28,7 @@ SOFTWARE.
 '''
 
 import sys
-sys.path.append('../') #this to include the parent directory
+sys.path.append('../../') #this to include the parent directory
 import beeBrain.neuralNetworks as nn
 import numpy as np
 
