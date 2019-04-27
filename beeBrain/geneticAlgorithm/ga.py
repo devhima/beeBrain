@@ -35,27 +35,26 @@ SOFTWARE.
 import numpy as np
 
 class GeneticAlgorithm(object):
-    def __init__(self, DNA_size, DNA_bound, cross_rate, mutation_rate, pop_size, target):
+    def __init__(self, DNA_size, DNA_bound, cross_rate, mutation_rate, pop_size, no_zero_fitness=False):
         self.DNA_size = DNA_size
         DNA_bound[1] += 1
         self.DNA_bound = DNA_bound
         self.cross_rate = cross_rate
         self.mutate_rate = mutation_rate
         self.pop_size = pop_size
-        self.TARGET = target
-        self.pop = np.random.randint(*DNA_bound, size=(pop_size, DNA_size)).astype(np.int)
+        self.no_zero_fitness = no_zero_fitness
+        self.pop = np.random.randint(*DNA_bound, size=(pop_size, DNA_size))
 
     def translateDNA(self, DNA):                 # convert to string
         return DNA.tostring()
 
-    def get_fitness(self):                      # calculate fitness
-        match_count = (self.pop == self.TARGET).sum(axis=1)
-        return match_count
-
-    def select(self):
-        fitness = self.get_fitness() + 1e-4     # add a small amount to avoid all zero fitness
-        idx = np.random.choice(np.arange(self.pop_size), size=self.pop_size, replace=True, p=fitness/fitness.sum())
-        return self.pop[idx]
+    def select(self, fitness):
+    	zero_fitness_value = 0
+    	if self.no_zero_fitness == True:
+    		zero_fitness_value = 1e-4    # add a small amount to avoid all zero fitness
+    	fitness = fitness + zero_fitness_value
+    	idx = np.random.choice(np.arange(self.pop_size), size=self.pop_size, replace=True, p=fitness/fitness.sum())
+    	return self.pop[idx]
 
     def crossover(self, parent, pop):
         if np.random.rand() < self.cross_rate:
@@ -70,8 +69,8 @@ class GeneticAlgorithm(object):
                 child[point] = np.random.randint(*self.DNA_bound)  # choose a random index in range of DNA_bound
         return child
 
-    def evolve(self):
-        pop = self.select()
+    def evolve(self, fitness):
+        pop = self.select(fitness)
         pop_copy = pop.copy()
         for parent in pop:  # for every parent
             child = self.crossover(parent, pop_copy)
